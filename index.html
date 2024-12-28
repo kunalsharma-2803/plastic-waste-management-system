@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plastic Waste Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, textarea, button {
+      margin-top: 5px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .data-list {
+      margin-top: 30px;
+    }
+    .data-item {
+      background: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Plastic Waste Management</h1>
+    <form id="wasteForm">
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" required>
+
+      <label for="amount">Amount of Plastic Waste (in kg):</label>
+      <input type="number" id="amount" name="amount" required>
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <div class="data-list" id="dataList"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('wasteForm');
+    const dataList = document.getElementById('dataList');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const location = document.getElementById('location').value;
+      const amount = document.getElementById('amount').value;
+      const description = document.getElementById('description').value;
+
+      const response = await fetch('http://localhost:3000/api/waste', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ location, amount, description }),
+      });
+
+      if (response.ok) {
+        alert('Waste data submitted successfully!');
+        form.reset();
+        fetchWasteData();
+      } else {
+        alert('Failed to submit data');
+      }
+    });
+
+    async function fetchWasteData() {
+      const response = await fetch('http://localhost:3000/api/waste');
+      const data = await response.json();
+
+      dataList.innerHTML = '';
+      data.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'data-item';
+        div.innerHTML = `
+          <p><strong>Location:</strong> ${item.location}</p>
+          <p><strong>Amount:</strong> ${item.amount} kg</p>
+          <p><strong>Description:</strong> ${item.description}</p>
+        `;
+        dataList.appendChild(div);
+      });
+    }
+
+    // Fetch data on page load
+    fetchWasteData();
+  </script>
+</body>
+</html>

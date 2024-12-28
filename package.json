@@ -1,0 +1,17 @@
+{
+  "name": "plastic_waste_management_system",
+  "version": "1.0.0",
+  "description": "The **Plastic Waste Management System** is an application designed to guide users in properly segregating, recycling, or reusing plastic waste. This project aims to address the growing environmental concern caused by improper disposal of plastic by empowering individuals with the knowledge and tools to take responsible actions.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
